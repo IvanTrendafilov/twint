@@ -9,7 +9,6 @@ import asyncio
 import concurrent.futures
 import random
 from json import loads
-from aiohttp_socks import ProxyConnector, ProxyType
 
 from . import url
 from .output import Tweets, Users
@@ -49,33 +48,7 @@ def get_connector(config):
     logme.debug(__name__+':get_connector')
     _connector = None
     if config.Proxy_host:
-        if config.Proxy_host.lower() == "tor":
-            _connector = ProxyConnector(
-                host='127.0.0.1',
-                port=9050,
-                rdns=True)
-        elif config.Proxy_port and config.Proxy_type:
-            if config.Proxy_type.lower() == "socks5":
-                _type = ProxyType.SOCKS5
-            elif config.Proxy_type.lower() == "socks4":
-                _type = ProxyType.SOCKS4
-            elif config.Proxy_type.lower() == "http":
-                global httpproxy
-                httpproxy = "http://" + config.Proxy_host + ":" + str(config.Proxy_port)
-                return _connector
-            else:
-                logme.critical("get_connector:proxy-type-error")
-                print("Error: Proxy types allowed are: http, socks5 and socks4. No https.")
-                sys.exit(1)
-            _connector = ProxyConnector(
-                proxy_type=_type,
-                host=config.Proxy_host,
-                port=config.Proxy_port,
-                rdns=True)
-        else:
-            logme.critical(__name__+':get_connector:proxy-port-type-error')
-            print("Error: Please specify --proxy-host, --proxy-port, and --proxy-type")
-            sys.exit(1)
+        print("Not implemented")
     else:
         if config.Proxy_port or config.Proxy_type:
             logme.critical(__name__+':get_connector:proxy-host-arg-error')
